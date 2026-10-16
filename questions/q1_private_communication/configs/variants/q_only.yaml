@@ -1,0 +1,4 @@
+# Focused variant: Q-only private architecture (spec 15.3). Merged over the
+# base config; the resolved config records the final effective parameters.
+private_mode: q_only
+architecture_modes: [original, delete, private_q, public_adapter, constant_q]

@@ -1,0 +1,51 @@
+# Smoke config: verifies the pipeline end-to-end. NOT a formal experiment
+# (results are never reported as conclusions).
+run_tag: smoke
+device: cuda
+seed: 0
+
+model:
+  name: gpt2
+  load_options:
+    fold_ln: false
+    center_writing_weights: false
+    fold_value_biases: false
+
+architecture_modes:
+  [original, delete, private_q, private_v, private_qv, public_adapter,
+   constant_q, constant_v, constant_qv]
+private_mode: qv   # spec 15.8 field; variants/*.yaml override it
+intervention_modes: [normal, off, mean_input, shuffled_input, paired_swap]
+
+budget_regimes: [fixed_total_budget]
+budget:
+  fixed_total_budget: { total_params: 24000 }
+  fixed_branch_capacity: { branch_rank: 4 }
+
+data:
+  seed: 0
+  n_train_templates: 2
+  n_holdout_templates: 1
+  forms: [name]
+  extra_distractors: true
+
+train:
+  lr: 0.001
+  steps: 40
+  batch_size: 16
+  eval_every: 20
+  early_stop_patience: 5
+  lambda_kl: 0.0
+  kl_temperature: 1.0
+  grad_clip: 1.0
+  seeds: [0]
+  selection_metric: mean_D
+
+evaluate:
+  splits: [test_combination, test_template, test_distractor]
+  batch_size: 16
+
+causal:
+  split: test_combination
+  batch_size: 16
+  n_pairs_cap: 40

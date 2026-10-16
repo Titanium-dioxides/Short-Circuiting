@@ -1,0 +1,54 @@
+# Full experiment config. Runs BOTH budget regimes (spec 17): if resources
+# only allow one, fixed_total_budget is run and the other is recorded as
+# 未执行 (not_executed) — never silently dropped.
+run_tag: full
+device: cuda
+seed: 0
+
+model:
+  name: gpt2
+  load_options:
+    fold_ln: false
+    center_writing_weights: false
+    fold_value_biases: false
+
+architecture_modes:
+  [original, delete, private_q, private_v, private_qv, public_adapter,
+   constant_q, constant_v, constant_qv]
+private_mode: qv
+intervention_modes: [normal, off, mean_input, shuffled_input, paired_swap]
+
+budget_regimes: [fixed_total_budget, fixed_branch_capacity]
+budget:
+  # P=26000: q/v get r=4 (25216 params), qv splits equally to r=2+2
+  # (25600 params) — totals within ~1.5% (recorded in the resolved config).
+  fixed_total_budget: { total_params: 26000 }
+  fixed_branch_capacity: { branch_rank: 4 }
+
+data:
+  seed: 0
+  n_train_templates: 5        # all TEMPLATES_TRAIN
+  n_holdout_templates: 2      # all TEMPLATES_HOLDOUT
+  forms: [name, pronoun]
+  extra_distractors: true
+
+train:
+  lr: 0.001
+  steps: 2000
+  batch_size: 32
+  eval_every: 100
+  early_stop_patience: 10
+  lambda_kl: 0.0
+  kl_temperature: 1.0
+  grad_clip: 1.0
+  seeds: [0, 1, 2]            # >= 3 seeds; fewer only with explicit note
+  selection_metric: mean_D
+
+evaluate:
+  splits: [test_combination, test_template, test_distractor]
+  batch_size: 32
+
+causal:
+  split: test_combination
+  batch_size: 32
+  n_pairs_cap: null

@@ -1,0 +1,55 @@
+from shared.models.backbone import (
+    LOAD_OPTIONS,
+    GPT2_SMALL_SNAPSHOT,
+    fingerprint_matches,
+    load_backbone,
+    load_hf_model,
+    load_tokenizer,
+    param_fingerprint,
+)
+from shared.models.hook_backend import ForwardState, HookBackend, Intervention
+from shared.models.private_transformer import (
+    AnalysisBundle,
+    PrivateTransformer,
+    build_adapters,
+)
+from shared.models.routing import (
+    ARCHITECTURE_MODES,
+    BUDGET_REGIMES,
+    INTERVENTION_MODES,
+    BudgetConfig,
+    BudgetRanks,
+    CircuitSpec,
+    HeadRef,
+    budget_resolution_table,
+    param_counts_for_mode,
+    resolve_budget,
+    validate_budget_ranks,
+)
+
+__all__ = [
+    "LOAD_OPTIONS",
+    "GPT2_SMALL_SNAPSHOT",
+    "fingerprint_matches",
+    "load_backbone",
+    "load_hf_model",
+    "load_tokenizer",
+    "param_fingerprint",
+    "ForwardState",
+    "HookBackend",
+    "Intervention",
+    "AnalysisBundle",
+    "PrivateTransformer",
+    "build_adapters",
+    "ARCHITECTURE_MODES",
+    "BUDGET_REGIMES",
+    "INTERVENTION_MODES",
+    "BudgetConfig",
+    "BudgetRanks",
+    "CircuitSpec",
+    "HeadRef",
+    "budget_resolution_table",
+    "param_counts_for_mode",
+    "resolve_budget",
+    "validate_budget_ranks",
+]

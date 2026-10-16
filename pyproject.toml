@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "short-circuiting"
+version = "0.1.0"
+description = "Public residual writeback deletion + private A->B Query/Value modulation (GPT-2 small, IOI)"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "transformer-lens>=3.0",
+    "transformers>=4.40",
+    "accelerate",
+    "einops",
+    "pyyaml",
+    "numpy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+include = ["shared*", "questions*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "questions/q1_private_communication/tests"]
+addopts = "-q"
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.json"]

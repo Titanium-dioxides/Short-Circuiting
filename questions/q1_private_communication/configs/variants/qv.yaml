@@ -1,0 +1,4 @@
+# Focused variant: Q+V dual-branch architecture (spec 15.6).
+private_mode: qv
+architecture_modes:
+  [original, delete, private_qv, public_adapter, constant_qv]
